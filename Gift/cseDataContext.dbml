@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="CSEStudents" Class="cseDataContextDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="WebSettings" ConnectionString="Data Source=ISHWAR;Initial Catalog=CSEStudents;Integrated Security=True" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="CSEStudentsConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.tblStudents" Member="tblStudents">
+    <Type Name="tblStudent">
+      <Column Name="SL_No" AutoSync="Never" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="UserName" Type="System.String" DbType="NChar(50)" CanBeNull="true" />
+      <Column Name="Year" Type="System.String" DbType="NChar(10)" CanBeNull="true" />
+      <Column Name="Roll_No" Type="System.String" DbType="NChar(50)" CanBeNull="true" />
+      <Column Name="Password" Type="System.String" DbType="NChar(100)" CanBeNull="true" />
+      <Column Name="Email" Type="System.String" DbType="NChar(100)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Function Name="dbo.PWD" Method="PWD">
+    <Parameter Name="UserName" Parameter="userName" Type="System.String" DbType="NChar(50)" />
+    <ElementType Name="PWDResult">
+      <Column Name="Password" Type="System.String" DbType="NChar(100)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+</Database>

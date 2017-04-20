@@ -1,0 +1,131 @@
+﻿<!DOCTYPE html>
+<html>
+<style type="text/css">
+    .container {
+        display: flex;
+        flex-direction: row;
+        position: fixed;
+        top: 0;
+        width: 100%;
+        height: 40%;
+        background-image: url("Img/bitsindri.jpg");
+        border-bottom-left-radius: 5px;
+        border-bottom-right-radius: 5px;
+    }
+
+    .profilePic {
+        position: relative;
+        top: 10px;
+        left: 10px;
+        width: 170px;
+        height: 170px;
+        border-radius: 20px;
+        background-color: blue;
+    }
+
+    .searchBar {
+        position: relative;
+        top: 70px;
+        left: 40px;
+        width: 500px;
+        height: 45px;
+    }
+
+    .notificationBar {
+        position: relative;
+        top: 0px;
+        left: 33%;
+        width: 300px;
+        height: 45px;
+        background-color: black;
+        border-bottom-left-radius: 10px;
+        border-bottom-right-radius: 10px;
+    }
+
+    .chatSection {
+        position: fixed;
+        display: flex;
+        flex-direction: row-reverse;
+        background-color: green;
+        height: 100%;
+        width: 100%;
+        top: 40%;
+    }
+
+    .msgs {
+        cursor: pointer;
+        position: absolute;
+        right: 10px;
+        background-color: blue;
+        height: 10px;
+        width: 300px;
+        bottom: 40%;
+    }
+
+    input[type=text] {
+        width: 130px;
+        box-sizing: border-box;
+        border: 2px solid #ccc;
+        border-radius: 4px;
+        font-size: 16px;
+        background-color: white;
+        background-image: url('Img/searchicon.png');
+        background-position: 10px 10px;
+        background-size: 30px 30px;
+        background-repeat: no-repeat;
+        padding: 12px 20px 12px 40px;
+        -webkit-transition: width 0.4s ease-in-out;
+        transition: width 0.4s ease-in-out;
+    }
+
+        input[type=text]:focus {
+            width: 100%;
+        }
+
+    .msgs li {
+        font-family: helvetica;
+        padding-bottom: 5px;
+    }
+
+    .msgs li {
+        color: limegreen;
+    }
+
+        .msgs li span {
+            color: black;
+        }
+</style>
+}
+<head>
+    <title></title>
+</head>
+<body>
+    <div class="container">
+        <div class="profilePic"></div>
+        <div class="searchBar">
+            <input type="text" name="search" placeholder="Search..">
+        </div>
+        <div class="notificationBar"></div>
+    </div>
+    <div class="chatSection">
+        <script src="jquery-3.1.1.js"></script>
+        <script src="jqery-ui.js"></script>
+        <script>
+function divChange()
+{
+	$("#msgs").animate({height:"400px"})
+}
+        </script>
+        <div class="msgs" id="msgs" onclick="divChange()">
+            <ul>
+                <li><span>Sud</span></li>
+                <li><span>Rahul</span></li>
+                <li><span>Choudhary</span></li>
+                <li><span>Subham</span></li>
+                <li><span>Nikku</span></li>
+                <li><span>Jack</span></li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
