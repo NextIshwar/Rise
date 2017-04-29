@@ -103,9 +103,11 @@
     <title></title>
 </head>
 <body>
+    <form runat="server"> 
     <script src="scripts/ai.0.22.9-build00167.min.js"></script>
     <script src="scripts/jquery-1.6.4-vsdoc.js"></script>
-    <script src="scripts/jquery-1.6.4.js"></script>
+        <script src="scripts/jquery-3.1.1.min.js"></script>
+        <script src="scripts/jquery.signalR-2.2.1.min.js"></script>
     <script src="/signalr/hubs"></script>
     <script type="text/javascript">
         $(function () {
@@ -115,143 +117,131 @@
                 registerEvents(chatHub)
             })
         });
+        function registerEvents(chatHub)
+        {
+            var name = document.getElementById('<%= hiddenUserName.ClientID %>');
+                chatHub.server.connect(name);
+            
+        }
         function registerClientMethod(chatHub)
         {
-            chathub.client.onConnected = function (id, userName, allUsers, message) {
-                setScreen(true);
-
+            chatHub.client.onConnected=function(id, userName, allUsers, messages)
+            {
                 $('#hdId').val(id);
-                $('#hiddenUserName').val(userName);
-             //   $('#spanUser').html(userName);
-                for (i = 0; i < allUsers.length; i++) {
+                $('#hdUserName').val(userName);
 
+                for (i = 0; i < allUsers.length; i++) {
                     AddUser(chatHub, allUsers[i].ConnectionId, allUsers[i].UserName);
                 }
-                for (i = 0; i < messages.length; i++) {
 
+                for (i = 0; i < messages.length; i++) {
                     AddMessage(messages[i].UserName, messages[i].Message);
                 }
             }
         }
-        function AddUser(chatHub,id,userName)
+        function AddUser(chatHub,id,UserName)
         {
-            var userId = $('#hdId').val();
+            var userid = $('hdId').val();
+            if(userid==id)
+            {
 
-            var code = "";
-
-            if (userId == id) {
-
-               // code = $('<div class="loginUser">' + name + "</div>");
-                //var contsiner=$("Users").append('<li>')
             }
             else {
-
-               // code = $('<a id="' + id + '" class="user" >' + name + '<a>');
-            var code=    $('Users').append('<li><a id="'+id+ 'class="'+userName+'<a>');
-                $(code).dblclick(function () {
+                var code = $('<a id="' + id + '" class="user" >' + name + '<a>');
+                $(code).click(function () {
                     var id = $(this).attr('id');
-
-                    if (userId != id)
-                        OpenPrivateChatWindow(chatHub, id, name);
-
+                    if (userid != id) {
+                        PrivateWindow(chatHub, id, name);
+                    }
                 });
             }
-
-            $("#divusers").append(code);
-
+            $('chatSection').append(code);
         }
-        function OpenPrivateChatWindow(chatHub, id, userName) {
-
+        function PrivateChatWindow(chatHub, id, userName) {
             var ctrId = 'private_' + id;
-
             if ($('#' + ctrId).length > 0) return;
-
             createPrivateChatWindow(chatHub, id, ctrId, userName);
+        }
 
+        function divChange() {
+                $("#msgs").animate({ height: "400px" })
+                $("#msgs").css("cursor", "default")
         }
         function createPrivateChatWindow(chatHub, userId, ctrId, userName) {
-
             var div = '<div id="' + ctrId + '" class="ui-widget-content draggable" rel="0">' +
                        '<div class="header">' +
                           '<div  style="float:right;">' +
-                              '<img id="imgDelete"  style="cursor:pointer;" src="/Images/delete.png"/>' +
-                           '</div>' +  
-
+                              '<img id="imgDelete"  style="cursor:pointer;" src="/img/delete.png"/>' +
+                           '</div>' +
                            '<span class="selText" rel="0">' + userName + '</span>' +
                        '</div>' +
                        '<div id="divMessage" class="messageArea">' +
-
                        '</div>' +
                        '<div class="buttonBar">' +
                           '<input id="txtPrivateMessage" class="msgText" type="text"   />' +
                           '<input id="btnSendMessage" class="submitButton button" type="button" value="Send"   />' +
                        '</div>' +
                     '</div>';
-
             var $div = $(div);
-
-          
+            
             $div.find('#imgDelete').click(function () {
                 $('#' + ctrId).remove();
             });
-
-           
+            // Send Button event
             $div.find("#btnSendMessage").click(function () {
-
                 $textBox = $div.find("#txtPrivateMessage");
                 var msg = $textBox.val();
                 if (msg.length > 0) {
-
                     chatHub.server.sendPrivateMessage(userId, msg);
                     $textBox.val('');
                 }
             });
+            // Text Box event
             $div.find("#txtPrivateMessage").keypress(function (e) {
                 if (e.which == 13) {
                     $div.find("#btnSendMessage").click();
                 }
             });
-
             AddDivToContainer($div);
-
         }
         function AddDivToContainer($div) {
-            $('#divContainer').prepend($div);
-
+            $('#msgs').prepend($div);
             $div.draggable({
-
                 handle: ".header",
                 stop: function () {
-
                 }
             });
+            ////$div.resizable({
+            ////    stop: function () {
+            ////    }
+            ////});
         }
     </script>
     <div class="container">
-        
         <div class="profilePic"></div>
         <div class="searchBar">
             <input type="text" name="search" placeholder="Search.."/>
         </div>
-        <div class="notificationBar"></div>
-    </div>
-    <div class="chatSection">
-        <script src="jquery-3.1.1.js"></script>
-        <script src="jqery-ui.js"></script>
-        <script>
-function divChange()
-{
-   var a=$("hiddenUserName").val();
-    $("#msgs").animate({ height: "400px" })
-    $("#msgs").css("cursor","default")
-}
-        </script>
-        <div class="msgs" id="msgs" onclick="divChange()">
-            <ul id="Users">
-            </ul>
+        <div class="notificationBar">
+            <div class="notificationBell">
+                <img src="img/bell.png" style="height:2px; width:2px;" />
+            </div>
+            <div class="logout">
+                <img src="img/logout.png" style="height:2px; width:2px" />
+            </div>
         </div>
     </div>
+    <div class="chatSection" id="chatSection">
+        <div class="msgs" id="msgs" onclick="divChange()">
+             <input type="text" id="txtMessage" />
+             <input type="button" id="btnSendMsgs" />
+        </div>
+    </div>
+        <input type="hidden" id="hdId" />
+        <input type="hidden" id="UserName" />
     <asp:HiddenField runat="server" ID="hiddenUserName" />
-        <asp:HiddenField runat="server" ID="hdId" />
+       <!-- <asp:HiddenField runat="server" ID="hdIdd" />-->
+        
+        </form>
 </body>
 </html>

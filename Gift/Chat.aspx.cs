@@ -12,8 +12,11 @@ namespace Gift
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            string username = Session["uname"].ToString();
-            hiddenUserName.Value = username.ToString();
+            if(Session["uname"]!=null)
+            {
+                hiddenUserName.Value = Session["uname"].ToString();
+            }
+            
         }
     }
 }
